@@ -1,10 +1,15 @@
 @extends('layouts.base')
 
 @section('body')
-    @yield('content')
-    <x-header></x-header>
-    @isset($slot)
-        {{ $slot }}
-    @endisset
-    <x-footer></x-footer>
+    <div>
+        @yield('content')
+        <x-header></x-header>
+        <div class="min-h-screen">
+            @isset($slot)
+            {{ $slot }}
+        @endisset
+        </div>
+        <x-footer></x-footer>
+    </div>
+
 @endsection

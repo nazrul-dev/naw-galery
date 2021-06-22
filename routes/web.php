@@ -1,66 +1,29 @@
 <?php
 
-use App\Http\Controllers\Auth\EmailVerificationController;
-use App\Http\Controllers\Auth\LogoutController;
-use App\Http\Livewire\Auth\Login;
-use App\Http\Livewire\Auth\Passwords\Confirm;
-use App\Http\Livewire\Auth\Passwords\Email;
-use App\Http\Livewire\Auth\Passwords\Reset;
-use App\Http\Livewire\Auth\Register;
-use App\Http\Livewire\Auth\Verify;
-use App\Http\Livewire\Galery;
-use App\Http\Livewire\Home;
-use App\Http\Livewire\Kontak;
-use App\Http\Livewire\Pricing;
-use App\Http\Livewire\Service;
-use App\Http\Livewire\Team;
-use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+use App\Http\Livewire\{Dashboard,Galery, Home, Event, Video,Team,Reward, Mydownline, Testimoni};
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Route;
+Route::get('/cookie', function () {
+    return Cookie::get('referral');
+});
 
 Route::get('/', Home::class)->name('home');
-Route::get('service', Service::class)->name('service');
-Route::get('galery', Galery::class)->name('galery');
-Route::get('team', Team::class)->name('team');
-Route::get('pricing', Pricing::class)->name('pricing');
-Route::get('kontak', Kontak::class)->name('kontak');
-Route::middleware('guest')->group(function () {
-    Route::get('login', Login::class)
-        ->name('login');
+Route::get('/galeries', Galery::class)->name('galeries');
+Route::get('/rewards', Reward::class)->name('rewards');
+Route::get('/videos', Video::class)->name('videos');
+Route::get('/testimonies', Testimoni::class)->name('testimonies');
+Route::get('/events', Event::class)->name('events');
+Route::get('/teams', Team::class)->name('teams');
 
-    Route::get('register', Register::class)
-        ->name('register');
-});
 
-Route::get('password/reset', Email::class)
-    ->name('password.request');
+// Route::middleware(['auth'])->group(function () {
+//     Route::get('dashboard', Dashboard::class)->name('dashboard');
+//     Route::get('profil/{user:username}', Mydownline::class)->name('mydownline');
+// });
 
-Route::get('password/reset/{token}', Reset::class)
-    ->name('password.reset');
 
-Route::middleware('auth')->group(function () {
-    Route::get('email/verify', Verify::class)
-        ->middleware('throttle:6,1')
-        ->name('verification.notice');
 
-    Route::get('password/confirm', Confirm::class)
-        ->name('password.confirm');
-});
-
-Route::middleware('auth')->group(function () {
-    Route::get('email/verify/{id}/{hash}', EmailVerificationController::class)
-        ->middleware('signed')
-        ->name('verification.verify');
-
-    Route::post('logout', LogoutController::class)
-        ->name('logout');
-});
+require_once __DIR__.'/auth.php';
+require_once __DIR__.'/reseller.php';
+require_once __DIR__.'/admin.php';

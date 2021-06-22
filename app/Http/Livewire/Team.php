@@ -1,13 +1,16 @@
 <?php
 
 namespace App\Http\Livewire;
-
+use App\Models\Team as Models;
 use Livewire\Component;
 
 class Team extends Component
 {
     public function render()
     {
-        return view('livewire.team');
+        $teams = Models::latest()->get();
+        return view('livewire.team', compact([
+            'teams'
+        ]));
     }
 }

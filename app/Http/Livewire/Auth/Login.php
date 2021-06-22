@@ -26,14 +26,43 @@ class Login extends Component
     {
         $this->validate();
 
-        if (!Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
-            $this->addError('email', trans('auth.failed'));
+        if (Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
+
+            if (auth()->user()->active) {
+                return redirect()->intended(route('reseller.dashboard'));
+            }else{
+                Auth::logout();
+                $this->alert('error', trans('auth.active'), [
+                    'position' =>  'top-right',
+                    'timer' =>  3000,
+                    'toast' =>  true,
+                    'confirmButtonText' =>  'Ok',
+                    'cancelButtonText' =>  'Cancel',
+                    'showCancelButton' =>  false,
+                    'showConfirmButton' =>  false,
+                ]);
+                return;
+            }
+
+        }else{
+            $this->alert('error', trans('auth.failed'), [
+                'position' =>  'top-right',
+                'timer' =>  3000,
+                'toast' =>  true,
+                'confirmButtonText' =>  'Ok',
+                'cancelButtonText' =>  'Cancel',
+                'showCancelButton' =>  false,
+                'showConfirmButton' =>  false,
+            ]);
 
             return;
+
         }
 
-        return redirect()->intended(route('home'));
+
     }
+
+
 
     public function render()
     {

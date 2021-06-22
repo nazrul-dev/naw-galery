@@ -18,6 +18,7 @@ class CreateGaleriesTable extends Migration
             $table->foreignId('category_id');
             $table->string('thumb');
             $table->string('image');
+            $table->boolean('show_home')->default(false);
             $table->timestamps();
         });
     }

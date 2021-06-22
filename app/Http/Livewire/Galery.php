@@ -2,12 +2,15 @@
 
 namespace App\Http\Livewire;
 
-use Livewire\Component;
+use App\Models\Media;
 
-class Galery extends Component
+class Galery extends Base
 {
     public function render()
     {
-        return view('livewire.galery');
+        $galeries = Media::where('tipe', 'galery')->latest()->get();
+        return view('livewire.galery', compact([
+            'galeries'
+        ]));
     }
 }

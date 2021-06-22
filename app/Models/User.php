@@ -20,6 +20,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'referred_by',
+        'username',
+        'active',
+        'packet_id'
     ];
 
     /**
@@ -30,6 +34,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'referred_by'
     ];
 
     /**
@@ -40,4 +45,25 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function profil(){
+        return $this->hasOne(Profil::class);
+    }
+
+    public function packet(){
+        return $this->belongsTo(Packet::class);
+    }
+
+
+    public function referrer()
+    {
+        return $this->belongsTo(Self::class, 'referred_by');
+    }
+
+    public function referrals()
+    {
+        return $this->hasMany(Self::class, 'referred_by');
+    }
+
+
 }
